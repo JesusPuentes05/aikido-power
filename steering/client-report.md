@@ -6,12 +6,12 @@ Generate a plain-language security report to deliver to a client. It covers one 
 
 | | |
 |---|---|
-| **Audience** | The client and their managers. The document leaves the company. |
+| **Audience** | The client and their managers (non-technical). For the client's technical team, use `technical-report.md`. The document leaves the company. |
 | **Purpose** | Deliverable that explains the security status of the project in plain language. |
 | **Contains** | Explanation of Aikido, executive summary, glossary, interpretation of results, evolution. Counts and fixed text only. |
 | **Not for** | Personal or internal tracking. It has no score, no file paths, no issue titles. Use `score-tracking-report.md` for that. |
 
-If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this client report, or the score tracking report.
+If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this client report, the score tracking report, or the technical report.
 ---
 
 ## Trigger

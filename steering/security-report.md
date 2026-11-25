@@ -39,8 +39,12 @@ Sort by date descending. The most recent file is the **previous snapshot** for c
 Query Aikido for all open issues:
 
 ```
-aikido_issues_list(repo_name: "repository-name")
+aikido_issues_list(repo_name: "repository-name", page: 0)
 ```
+
+**Fetch every page.** Keep requesting `page: 1, 2, 3...` until a page returns no issues. A snapshot built from only the first page has wrong totals.
+
+Each issue includes `location.branch_name`. If the issues of one repository come from more than one branch, ask the user which branch to snapshot (use the `repo_branch_name` filter) and never mix branches in one snapshot.
 
 Build the snapshot object:
 
@@ -48,6 +52,7 @@ Build the snapshot object:
 {
   "report_date": "YYYY-MM-DD",
   "repository": "repo-name",
+  "branch": "branch-name",
   "generated_by": "aikido-power",
   "summary": {
     "total_open_issues": 0,
@@ -68,27 +73,31 @@ Build the snapshot object:
     {
       "id": "issue_id",
       "title": "Issue title",
-      "severity": 85,
-      "severity_label": "critical",
-      "type": "sast",
-      "remediation": "How to fix"
+      "severity": 82,
+      "severity_label": "high",
+      "type": "open_source",
+      "remediation": "How to fix",
+      "file": "path/or/null",
+      "line": null,
+      "package": "package-name or null",
+      "installed_version": "version or null",
+      "cve": "CVE or Aikido id, or null"
     }
   ]
 }
 ```
 
+Field mapping from `aikido_issues_list`: `id` = `issue_id`, `title` = `issue_title`, `severity` = `issue_severity`, `severity_label` = `issue_severity_label`, `type` = `issue_type`, `remediation` = `issue_remediation`, `file` = `issue_file`, `package` = `issue_affected_package`, `installed_version` = `issue_installed_version`, `cve` = `issue_cve_id`. Use `null` when a field is not returned. Never store secret values.
+
 ### Severity Classification
 
-| Score | Label |
-|-------|-------|
-| > 80 | critical |
-| 60-80 | high |
-| 40-59 | medium |
-| < 40 | low |
+**Use the label Aikido returns** (`issue_severity_label`: `critical`, `high`, `medium`, `low`). Do not derive the label from the numeric score with fixed thresholds. Aikido's boundaries do not match round numbers: for example, issues with a score of 82 are labeled `high`, not `critical`.
+
+If an issue has no label, count it as "unclassified" and tell the user. Do not guess.
 
 ### Security Score Calculation
 
-After counting issues by severity, calculate the security score:
+After counting issues by label, calculate the security score:
 
 ```
 score = 100
@@ -99,6 +108,8 @@ score = max(score, 0)
 ```
 
 Include the score in the snapshot JSON as `"security_score": <number>`.
+
+**When reading older snapshots, always recalculate the score from the severity counts** with this formula. Do not trust a stored `security_score`: older snapshots may have been written with a different formula and would mix two scales in one timeline.
 
 ---
 

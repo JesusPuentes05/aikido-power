@@ -107,13 +107,13 @@ If user asks about a specific issue for context:
 
 ## Guidelines for Triage Recommendations
 
-When helping users prioritize:
+When helping users prioritize, use the severity label Aikido returns (do not derive it from the numeric score):
 
 | Severity | Recommended Action |
 |----------|-------------------|
-| Critical (>80) | Fix immediately or escalate to team lead |
-| High (60-80) | Fix within current sprint |
-| Medium (40-60) | Add to backlog, fix when touching that code |
-| Low (<40) | Track, fix opportunistically |
+| Critical | Fix immediately or escalate to team lead |
+| High | Fix within current sprint |
+| Medium | Add to backlog, fix when touching that code |
+| Low | Track, fix opportunistically |
 
 For false positives, always recommend ignoring with a documented reason rather than leaving them open.

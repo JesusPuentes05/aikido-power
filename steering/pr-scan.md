@@ -69,7 +69,7 @@ aikido_full_scan(
 
 ## Step 5: Report Results
 
-Present findings in this format:
+Present findings in this format. Group by the severity label Aikido returns for each finding. If only a numeric score is returned, show the score and do not map it to a label with fixed thresholds:
 
 ```markdown
 ## 🔒 Security Scan: PR #{number}
@@ -81,25 +81,25 @@ Present findings in this format:
 
 ---
 
-### 🔴 Critical (Severity > 80)
+### 🔴 Critical
 
 | File | Line | Issue | Remediation |
 |------|------|-------|-------------|
 | path/to/file.ts | 42 | Issue title | Fix description |
 
-### 🟠 High (Severity 60-80)
+### 🟠 High
 
 | File | Line | Issue | Remediation |
 |------|------|-------|-------------|
 | ... | ... | ... | ... |
 
-### 🟡 Medium (Severity 40-60)
+### 🟡 Medium
 
 | File | Line | Issue | Remediation |
 |------|------|-------|-------------|
 | ... | ... | ... | ... |
 
-### 🟢 Low (Severity < 40)
+### 🟢 Low
 
 | File | Line | Issue | Remediation |
 |------|------|-------|-------------|

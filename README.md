@@ -10,8 +10,9 @@ Un [Power de Kiro](https://kiro.dev) que conecta Kiro con [Aikido Security](http
 | Escaneo de PR | `steering/pr-scan.md` | Escanea cada archivo de código modificado en un pull request. Opcionalmente publica los resultados como comentario en el PR. | "Escanea el PR #45 en busca de vulnerabilidades" |
 | Triage de issues | `steering/issues-triage.md` | Lista los issues abiertos de Aikido de un repositorio, revisa un issue concreto o ignora uno con una razón documentada. | "Muéstrame todos los issues abiertos de Aikido de my-backend" |
 | Reporte de seguridad | `steering/security-report.md` | Guarda un snapshot JSON de los issues actuales y lo compara con el anterior (issues resueltos, nuevos y persistentes, y un score de seguridad). | "Genera un reporte de seguridad de my-api" |
+| Reporte técnico (para el equipo técnico del cliente) | `steering/technical-report.md` | Documento técnico para entregar a los desarrolladores y DevOps del cliente. Incluye el estado y el score por repositorio, el desglose por tipo, la tendencia con snapshots (o línea base si no los hay), el detalle de hallazgos con archivo, paquete, CVE y remediación, y las prioridades recomendadas. Las dependencias se agrupan por paquete. Un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto, la versión del documento y el idioma. | "Genera el reporte técnico de my-backend" |
 | Reporte de score (interno) | `steering/score-tracking-report.md` | Sigue tu score de seguridad en el tiempo como métrica de evaluación, a partir de los snapshots guardados. Incluye archivos y títulos de issues, así que no es para clientes. | "Genera el reporte de score de my-api" |
-| Reporte para el cliente (externo) | `steering/client-report.md` | Reporte en lenguaje sencillo para entregar al cliente, en español o inglés. Cubre un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto y el idioma. Sin score, sin rutas ni títulos. Muestra la evolución con snapshots, o un baseline si no los hay. | "Genera el reporte para el cliente de my-backend" |
+| Reporte para el cliente (no técnico) | `steering/client-report.md` | Reporte en lenguaje sencillo para entregar al cliente, en español o inglés. Cubre un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto y el idioma. Sin score, sin rutas ni títulos. Muestra la evolución con snapshots, o un baseline si no los hay. | "Genera el reporte para el cliente de my-backend" |
 
 Los flujos de escaneo también señalan posibles falsos positivos, como entradas ya validadas con Zod/Joi, secretos de ejemplo o rutas construidas con constantes.
 
@@ -60,7 +61,7 @@ Escanea el PR #45 en busca de vulnerabilidades
 Muéstrame todos los issues abiertos de Aikido de my-backend
 Ignora el issue 12345, es un falso positivo validado por un schema
 Genera un reporte de seguridad de my-api
-Genera el reporte de score de my-api
+Genera el reporte técnico de my-backend
 Genera el reporte para el cliente de my-backend
 ```
 
@@ -84,12 +85,12 @@ Los datos históricos solo existen si antes se guardaron snapshots. Aikido devue
 Los archivos se escriben en `security/reports/`, en la raíz del workspace:
 
 - `YYYY-MM-DD-{repo-name}.json`: un snapshot por día. Volver a generar el reporte el mismo día lo sobrescribe.
-- `score-tracking-report-{period}-{repo-name}.md`: el reporte de score, de uso interno.
+- `technical-report-{project}-v{version}-{YYYY-MM-DD}.md`: el reporte técnico, para el equipo técnico del cliente.
 - `client-report-{project}-{YYYY-MM-DD}.md`: el reporte para el cliente, en lenguaje sencillo.
 
-El score de seguridad es `100 - (3 × críticos) - (2 × altos) - (1 × medios)`, con mínimo 0. Los issues de severidad baja no lo afectan. Lo usan el reporte de seguridad y el reporte de score. El reporte para el cliente no lo muestra.
+El score de seguridad es `100 - (3 × críticos) - (2 × altos) - (1 × medios)`, con mínimo 0. Los issues de severidad baja no lo afectan. Lo usan el reporte de seguridad, el reporte técnico y el reporte de score, siempre recalculado desde los conteos de cada snapshot. El reporte para el cliente no lo muestra. La severidad de cada issue es la etiqueta que devuelve Aikido, no un umbral propio.
 
-Versiona la carpeta `security/reports/` para que el equipo comparta el historial. Los snapshots contienen títulos de issues y rutas de archivos, así que comprueba que la visibilidad de tu repositorio sea adecuada.
+Los snapshots y los reportes técnicos contienen títulos de issues, rutas de archivos y la ubicación de secretos expuestos. Entrega el reporte técnico solo al cliente dueño del repositorio y por un canal controlado. Nunca contiene valores de secretos. Versiona `security/reports/` solo en un repositorio con acceso restringido. Si el repositorio es amplio, añade la carpeta a `.gitignore`. El agente no hace commit de estos archivos por su cuenta.
 
 ## Troubleshooting
 
@@ -105,4 +106,4 @@ Versiona la carpeta `security/reports/` para que el equipo comparta el historial
 
 - Ignorar un issue en Aikido lo quita de los escaneos y snapshots futuros, y el reporte lo cuenta como resuelto. Da siempre una razón documentada.
 - El reporte de score incluye las secciones "Actions Taken" y "Next Steps" con texto de ejemplo. Edítalas antes de entregarlo.
-- Si pides solo "el reporte ejecutivo", el agente te pregunta si quieres el reporte de score (interno) o el reporte para el cliente.
+- Si pides solo "el reporte ejecutivo", el agente te pregunta si quieres el reporte técnico, el reporte de score (interno) o el reporte para el cliente.

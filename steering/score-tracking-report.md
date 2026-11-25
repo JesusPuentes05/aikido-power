@@ -15,7 +15,7 @@ The score reflects the state of the **repository**, not the work of one person. 
 
 > Note: the score reflects the state of the repository at each date. Changes can also come from new vulnerability disclosures or changes in Aikido's evaluation criteria.
 
-If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this score tracking report, or the client report.
+If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this score tracking report, the client report, or the technical report.
 ---
 
 ## Trigger
@@ -64,7 +64,7 @@ score -= (medium_count * 1)
 score = max(score, 0)
 ```
 
-If the snapshot already has `security_score`, use it. Otherwise calculate it.
+Always calculate the score from the severity counts of each snapshot. Ignore any stored `security_score`: older snapshots may use a different formula and would mix two scales in one timeline.
 
 ### Period Deltas
 
