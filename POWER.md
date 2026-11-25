@@ -21,6 +21,7 @@ Beyond scanning, it provides a structured workflow for generating security repor
 - **issues-triage** — List, review, and manage Aikido issues for a repository
 - **security-report** — Generate a security snapshot with metrics and compare against previous periods
 - **executive-report** — Generate a polished markdown report for evaluations, ready to paste into Google Docs
+- **executive-summary** — Generate a plain-language security report for managers and executives, for one repository or several in one document
 
 ## Onboarding
 
@@ -82,6 +83,11 @@ Generate a polished document for your evaluation:
 > "Generate the executive security report for my-api"
 
 Produces a copy-paste ready markdown with security score, progress timeline, achievements, and remaining risks. Edit the "Actions Taken" section with your specific work before submitting.
+
+### Executive Summary (non-technical)
+Generate a report for managers and executives:
+> "Generate the executive summary for my-backend"
+The agent asks for the project name and the language, then builds a document with an explanation of Aikido, an executive summary, a glossary, an interpretation of results and the evolution against previous snapshots. If no snapshots exist, it is a baseline. To combine several repositories in one document, name them in the request.
 
 ## Best Practices
 

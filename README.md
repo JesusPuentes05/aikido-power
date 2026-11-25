@@ -1,86 +1,107 @@
 # Aikido Security Scanner (Kiro Power)
 
-A [Kiro Power](https://kiro.dev) that connects Kiro to [Aikido Security](https://www.aikido.dev). It lets you scan code for SAST vulnerabilities and hardcoded secrets, triage Aikido issues, and generate security reports with metrics you can use in compliance reviews or performance evaluations.
+Un [Power de Kiro](https://kiro.dev) que conecta Kiro con [Aikido Security](https://www.aikido.dev). Permite escanear código en busca de vulnerabilidades SAST y secretos hardcodeados, gestionar los issues de Aikido y generar reportes de seguridad con métricas para revisiones de cumplimiento o evaluaciones de desempeño.
 
-## What it does
+## Qué hace
 
-| Workflow | Steering file | Description |
-|----------|---------------|-------------|
-| File scan | `steering/file-scan.md` | Scan specific files, a directory, or your local git changes (staged and unstaged). |
-| PR scan | `steering/pr-scan.md` | Scan every code file modified in a pull request. Optionally posts the results as a PR comment. |
-| Issue triage | `steering/issues-triage.md` | List open Aikido issues for a repository, review a single issue, or ignore one with a documented reason. |
-| Security report | `steering/security-report.md` | Save a JSON snapshot of the current issues and compare it with the previous one (resolved, new, persistent issues and a security score). |
-| Executive report | `steering/executive-report.md` | Build a markdown report from the saved snapshots, ready to paste into Google Docs or Confluence. |
+| Flujo | Archivo de steering | Descripción |
+|-------|---------------------|-------------|
+| Escaneo de archivos | `steering/file-scan.md` | Escanea archivos concretos, un directorio o tus cambios locales de git (staged y unstaged). |
+| Escaneo de PR | `steering/pr-scan.md` | Escanea cada archivo de código modificado en un pull request. Opcionalmente publica los resultados como comentario en el PR. |
+| Triage de issues | `steering/issues-triage.md` | Lista los issues abiertos de Aikido de un repositorio, revisa un issue concreto o ignora uno con una razón documentada. |
+| Reporte de seguridad | `steering/security-report.md` | Guarda un snapshot JSON de los issues actuales y lo compara con el anterior (issues resueltos, nuevos y persistentes, y un score de seguridad). |
+| Reporte ejecutivo | `steering/executive-report.md` | Construye un reporte técnico en markdown a partir de los snapshots guardados, listo para pegar en Google Docs o Confluence. |
+| Resumen ejecutivo | `steering/executive-summary.md` | Reporte en lenguaje sencillo para gerentes y directivos, en español o inglés. Cubre un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto y el idioma. Muestra la evolución con snapshots, o un baseline si no los hay. |
 
-The scan workflows also flag likely false positives, such as input already validated by Zod/Joi, placeholder secrets, or paths built from constants.
+Los flujos de escaneo también señalan posibles falsos positivos, como entradas ya validadas con Zod/Joi, secretos de ejemplo o rutas construidas con constantes.
 
-## Repository layout
+## Estructura del repositorio
 
 ```
 aikido-power/
-├── POWER.md      Power definition, onboarding and troubleshooting
-├── mcp.json      MCP server configuration (@aikidosec/mcp)
-├── README.md     This file
-└── steering/     One workflow guide per capability
+├── POWER.md      Definición del Power, onboarding y troubleshooting
+├── mcp.json      Configuración del servidor MCP (@aikidosec/mcp)
+├── README.md     Este archivo
+└── steering/     Una guía de flujo por cada capacidad
 ```
 
-## Requirements
+## Requisitos
 
-- **Kiro** with Powers support.
-- **Node.js 18 or newer**, with `npx` available. The MCP server runs as `npx -y @aikidosec/mcp`.
-- **An Aikido account** with access to the repositories you want to scan.
-- **Network access** to Aikido and to the npm registry.
-- **Optional, for PR scans:** a GitHub MCP server or equivalent tools configured in Kiro. This Power does not install one. Without it, PR scans cannot fetch the list of changed files.
-- **Optional, for reports:** a git repository where `security/reports/` can be created and committed.
+- **Kiro** con soporte para Powers.
+- **Node.js 18 o superior**, con `npx` disponible. El servidor MCP se ejecuta como `npx -y @aikidosec/mcp`.
+- **Una cuenta de Aikido** con acceso a los repositorios que quieras escanear.
+- **Acceso a red** hacia Aikido y hacia el registro de npm.
+- **Opcional, para escaneo de PR:** un servidor MCP de GitHub o herramientas equivalentes configuradas en Kiro. Este Power no instala ninguno. Sin él, el escaneo de PR no puede obtener la lista de archivos modificados.
+- **Opcional, para reportes:** un repositorio git donde se pueda crear y versionar `security/reports/`.
 
-## Installation
+## Instalación
 
-1. Open the Powers panel in Kiro and install this Power from this repository (a local path or Git URL).
-2. Confirm Node.js is available:
+1. Abre el panel de Powers en Kiro e instala este Power desde este repositorio (ruta local o URL de Git).
+2. Comprueba que Node.js está disponible:
    ```
    node --version
    ```
-3. Ask Kiro to run any Aikido command, for example "Scan src/app.ts for security issues".
+3. Pídele a Kiro cualquier comando de Aikido, por ejemplo "Escanea src/app.ts en busca de problemas de seguridad".
 
-## Authentication
+## Autenticación
 
-On first use, Kiro shows a sign-in link. Open it in your browser and authorize access. The session is stored locally. To sign in again, ask Kiro: "Login to Aikido".
+En el primer uso, Kiro muestra un enlace de inicio de sesión. Ábrelo en el navegador y autoriza el acceso. La sesión se guarda localmente. Para iniciar sesión de nuevo, dile a Kiro: "Login to Aikido".
 
-If the MCP server reports an unauthorized or invalid token error, check whether your Aikido setup requires an API key. In that case set the `AIKIDO_API_KEY` environment variable and restart Kiro. Do not commit the key to the repository.
+Cada persona se autentica con su propia cuenta de Aikido, y ve los repositorios y workspaces a los que esa cuenta tenga acceso. El Power no limita el acceso por su cuenta. Los permisos se controlan en Aikido.
 
-## Usage examples
+Si el servidor MCP informa un error de token inválido o no autorizado, comprueba si tu configuración de Aikido exige una API key. En ese caso define la variable de entorno `AIKIDO_API_KEY` y reinicia Kiro. No subas la clave al repositorio.
+
+## Ejemplos de uso
 
 ```
-Scan src/controllers/auth.controller.ts for security issues
-Check my staged changes for vulnerabilities
-Scan PR #45 for security vulnerabilities
-Show me all open Aikido issues for my-backend
-Ignore issue 12345, it is a false positive validated by a schema
-Generate a security report for my-api
-Generate the executive security report for my-api
+Escanea src/controllers/auth.controller.ts en busca de problemas de seguridad
+Revisa mis cambios staged en busca de vulnerabilidades
+Escanea el PR #45 en busca de vulnerabilidades
+Muéstrame todos los issues abiertos de Aikido de my-backend
+Ignora el issue 12345, es un falso positivo validado por un schema
+Genera un reporte de seguridad de my-api
+Genera el reporte ejecutivo de seguridad de my-api
+Genera el resumen ejecutivo de my-backend
 ```
 
-## Security report data
+Los flujos están escritos en inglés, pero el agente entiende y responde en el idioma que uses. El resumen ejecutivo pregunta en qué idioma se debe generar el documento.
 
-Snapshots are written to `security/reports/` in the workspace root:
+## Resumen ejecutivo
 
-- `YYYY-MM-DD-{repo-name}.json`: one snapshot per day. Running the report again on the same day overwrites it.
-- `executive-report-{period}-{repo-name}.md`: the generated executive report.
+Es el flujo pensado para audiencias no técnicas. Funciona así:
 
-The security score is `100 - (3 × critical) - (2 × high) - (1 × medium)`, with a minimum of 0. Low severity issues do not affect it.
+- Pregunta el **nombre del proyecto** para el título y el **idioma** del documento (español o inglés).
+- Usa solo los repositorios que nombres. Si nombras varios (por ejemplo backend y frontend), los une en un solo documento con un desglose por repositorio.
+- Obtiene todos los issues abiertos desde Aikido y los agrupa en credenciales, dependencias, código y otros.
+- Calcula la evolución con los snapshots de `security/reports/`. Si no hay ninguno, el reporte sale como baseline y ofrece guardar un snapshot para la próxima vez.
+- No muestra score. Tampoco incluye valores de secretos, rutas de archivos, títulos de issues ni IDs. Solo conteos y texto explicativo.
+- Es de solo lectura. No ignora, pospone ni cambia la severidad de ningún issue.
 
-Commit the `security/reports/` folder so the team shares the history. Snapshots contain issue titles and file paths, so check that your repository's visibility is appropriate for that.
+Los datos históricos solo existen si antes se guardaron snapshots. Aikido devuelve únicamente el estado actual.
+
+## Datos de los reportes
+
+Los archivos se escriben en `security/reports/`, en la raíz del workspace:
+
+- `YYYY-MM-DD-{repo-name}.json`: un snapshot por día. Volver a generar el reporte el mismo día lo sobrescribe.
+- `executive-report-{period}-{repo-name}.md`: el reporte ejecutivo técnico generado.
+- `executive-summary-{project}-{YYYY-MM-DD}.md`: el resumen ejecutivo en lenguaje sencillo.
+
+El score de seguridad es `100 - (3 × críticos) - (2 × altos) - (1 × medios)`, con mínimo 0. Los issues de severidad baja no lo afectan. Solo lo usan los reportes de seguridad y ejecutivo técnico.
+
+Versiona la carpeta `security/reports/` para que el equipo comparta el historial. Los snapshots contienen títulos de issues y rutas de archivos, así que comprueba que la visibilidad de tu repositorio sea adecuada.
 
 ## Troubleshooting
 
-| Problem | What to try |
-|---------|-------------|
-| Aikido tools do not appear | Run `node --version` (need 18+), then `npx -y @aikidosec/mcp` manually to see the error. Restart Kiro. |
-| "Unauthorized" or "sign-in required" | Ask Kiro "Login to Aikido". If that fails, check `AIKIDO_API_KEY` for extra spaces or an expired token. |
-| Scan returns nothing for a vulnerable file | Check that the language is supported, that the repository name matches the one in Aikido, and that the file is not empty. |
-| PR scan cannot list files | Configure a GitHub MCP server in Kiro. |
+| Problema | Qué probar |
+|----------|------------|
+| No aparecen las herramientas de Aikido | Ejecuta `node --version` (se necesita 18+) y luego `npx -y @aikidosec/mcp` manualmente para ver el error. Reinicia Kiro. |
+| "Unauthorized" o "sign-in required" | Dile a Kiro "Login to Aikido". Si falla, revisa `AIKIDO_API_KEY` por espacios de más o un token vencido. |
+| El escaneo no devuelve nada para un archivo vulnerable | Comprueba que el lenguaje sea compatible, que el nombre del repositorio coincida con el de Aikido y que el archivo no esté vacío. |
+| El escaneo de PR no puede listar archivos | Configura un servidor MCP de GitHub en Kiro. |
+| Los totales del resumen ejecutivo parecen bajos | Comprueba que el nombre del repositorio sea exactamente el de Aikido. El flujo recorre todas las páginas de resultados. |
 
-## Notes
+## Notas
 
-- Ignoring an issue in Aikido removes it from future scans and snapshots, and the report counts it as resolved. Always give a documented reason.
-- The executive report includes "Actions Taken" and "Next Steps" sections with placeholder text. Edit them before submitting.
+- Ignorar un issue en Aikido lo quita de los escaneos y snapshots futuros, y el reporte lo cuenta como resuelto. Da siempre una razón documentada.
+- El reporte ejecutivo técnico incluye las secciones "Actions Taken" y "Next Steps" con texto de ejemplo. Edítalas antes de entregarlo.
