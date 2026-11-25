@@ -7,7 +7,7 @@ List, review, and manage security issues detected by Aikido for a repository.
 ## Trigger
 
 User asks about existing issues, for example:
-- "Show me Aikido issues for ethos_beneficios_backend"
+- "Show me Aikido issues for my-backend"
 - "List security vulnerabilities in my repo"
 - "What open security issues do we have?"
 - "Ignore issue 12345 — it's a false positive"

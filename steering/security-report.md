@@ -7,7 +7,7 @@ Generate a security snapshot with quantifiable metrics. Compare against previous
 ## Trigger
 
 User asks for a security report, for example:
-- "Generate a security report for ethos_beneficios_backend"
+- "Generate a security report for my-backend"
 - "Create a security snapshot"
 - "Show me our security progress this quarter"
 - "Generate the quarterly security metrics"
@@ -28,7 +28,7 @@ If the `security/reports/` directory doesn't exist, create it.
 
 Look for existing snapshot files in `security/reports/`:
 - Pattern: `YYYY-MM-DD-{repo-name}.json`
-- Example: `2025-01-15-ethos_beneficios_backend.json`
+- Example: `2025-01-15-my-backend.json`
 
 Sort by date descending. The most recent file is the **previous snapshot** for comparison.
 
@@ -48,7 +48,7 @@ Build the snapshot object:
 {
   "report_date": "YYYY-MM-DD",
   "repository": "repo-name",
-  "generated_by": "aikido-security-scanner-power",
+  "generated_by": "aikido-power",
   "summary": {
     "total_open_issues": 0,
     "critical": 0,

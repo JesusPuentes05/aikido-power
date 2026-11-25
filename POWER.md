@@ -1,6 +1,6 @@
 ---
-name: "aikido-security-scanner"
-displayName: "Codster AIKIDO Power"
+name: "aikido-power"
+displayName: "Aikido Security Scanner"
 description: "Run SAST and secrets scans on code files, triage security issues, and generate periodic security reports with quantifiable metrics for compliance tracking."
 keywords: ["aikido", "security", "sast", "secrets", "vulnerability", "scan"]
 author: "Codster"
@@ -63,7 +63,7 @@ The agent fetches the PR file list, reads each code file, runs the scan, and pre
 
 Review your repo's security posture:
 
-> "Show me all open Aikido issues for ethos_beneficios_backend"
+> "Show me all open Aikido issues for my-backend"
 
 The agent queries the Aikido feed and presents issues sorted by severity with remediation guidance.
 
@@ -71,7 +71,7 @@ The agent queries the Aikido feed and presents issues sorted by severity with re
 
 Generate a metrics snapshot for compliance:
 
-> "Generate a security report for api-ethos-medic"
+> "Generate a security report for my-api"
 
 The agent captures the current state, compares against any previous snapshot, and outputs a report with numbers and trends.
 
@@ -79,7 +79,7 @@ The agent captures the current state, compares against any previous snapshot, an
 
 Generate a polished document for your evaluation:
 
-> "Generate the executive security report for api-ethos-medic"
+> "Generate the executive security report for my-api"
 
 Produces a copy-paste ready markdown with security score, progress timeline, achievements, and remaining risks. Edit the "Actions Taken" section with your specific work before submitting.
 
