@@ -1,16 +1,30 @@
-# Executive Report Workflow
+# Score Tracking Report Workflow
 
-Generate a polished markdown report ready to paste into Google Docs, Confluence, or any evaluation document. This report summarizes security progress over a period using existing snapshots.
+Track the security score of a repository over time, from the saved snapshots. The result is a markdown report with the score, a timeline, resolved and new issues, and the top remaining risks.
 
+## Audience and Use
+
+| | |
+|---|---|
+| **Audience** | The engineer who runs it and their team lead. Internal use only. |
+| **Purpose** | Personal tracking of the security score over time, used as an evaluation metric. |
+| **Contains** | Score, timeline, issue counts by severity, resolved and new issues, top risks with file and remediation. |
+| **Not for** | Clients or external parties. Use `client-report.md` for those. |
+
+The score reflects the state of the **repository**, not the work of one person. It can drop when a new vulnerability is published for a dependency nobody touched, or when Aikido changes its criteria. The report must make that clear: always keep the "Actions Taken" section, and include this note under the score table:
+
+> Note: the score reflects the state of the repository at each date. Changes can also come from new vulnerability disclosures or changes in Aikido's evaluation criteria.
+
+If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this score tracking report, or the client report.
 ---
 
 ## Trigger
 
-User explicitly asks for an executive report, for example:
-- "Generate the executive security report"
+User asks to track their score or produce an evaluation report, for example:
+- "Generate the score tracking report"
 - "Create my evaluation security report"
 - "Give me the security summary for my evaluation"
-- "Generate executive report for my-api"
+- "Generate the score tracking report for my-api"
 
 ---
 
@@ -74,14 +88,14 @@ Compare issue IDs across all snapshots:
 
 ---
 
-## Step 4: Generate Executive Report
+## Step 4: Generate Report
 
 Output a markdown file at:
 ```
-security/reports/executive-report-{period}-{repo-name}.md
+security/reports/score-tracking-report-{period}-{repo-name}.md
 ```
 
-Example: `security/reports/executive-report-Q2-2026-my-api.md`
+Example: `security/reports/score-tracking-report-Q2-2026-my-api.md`
 
 ### Report Format
 
@@ -99,6 +113,8 @@ Example: `security/reports/executive-report-Q2-2026-my-api.md`
 | Period Start | Period End | Change |
 |--------------|-----------|--------|
 | {score_start}/100 | {score_end}/100 | {+/-change} {↑ if positive, ↓ if negative, → if zero} |
+
+> Note: the score reflects the state of the repository at each date. Changes can also come from new vulnerability disclosures or changes in Aikido's evaluation criteria.
 
 ---
 
@@ -187,6 +203,8 @@ If only one snapshot exists (no comparison possible):
 
 ## Security Score: {score}/100
 
+> Note: the score reflects the state of the repository at each date. Changes can also come from new vulnerability disclosures or changes in Aikido's evaluation criteria.
+
 ---
 
 ## Current State
@@ -221,7 +239,7 @@ _(This is your starting point. Generate another snapshot after fixing issues to 
 
 ## Notes
 
-- The executive report is meant to be **edited** by the developer before submitting — especially "Actions Taken" and "Next Steps"
+- The score tracking report is meant to be **edited** by the developer before submitting — especially "Actions Taken" and "Next Steps"
 - The score and metrics are auto-calculated, the narrative sections are templates
 - Encourage the user to run snapshots regularly so the timeline has enough data points
 - If the user asks for multi-repo, generate one section per repo in the same document

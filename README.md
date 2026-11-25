@@ -4,14 +4,14 @@ Un [Power de Kiro](https://kiro.dev) que conecta Kiro con [Aikido Security](http
 
 ## Qué hace
 
-| Flujo | Archivo de steering | Descripción |
-|-------|---------------------|-------------|
-| Escaneo de archivos | `steering/file-scan.md` | Escanea archivos concretos, un directorio o tus cambios locales de git (staged y unstaged). |
-| Escaneo de PR | `steering/pr-scan.md` | Escanea cada archivo de código modificado en un pull request. Opcionalmente publica los resultados como comentario en el PR. |
-| Triage de issues | `steering/issues-triage.md` | Lista los issues abiertos de Aikido de un repositorio, revisa un issue concreto o ignora uno con una razón documentada. |
-| Reporte de seguridad | `steering/security-report.md` | Guarda un snapshot JSON de los issues actuales y lo compara con el anterior (issues resueltos, nuevos y persistentes, y un score de seguridad). |
-| Reporte ejecutivo | `steering/executive-report.md` | Construye un reporte técnico en markdown a partir de los snapshots guardados, listo para pegar en Google Docs o Confluence. |
-| Resumen ejecutivo | `steering/executive-summary.md` | Reporte en lenguaje sencillo para gerentes y directivos, en español o inglés. Cubre un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto y el idioma. Muestra la evolución con snapshots, o un baseline si no los hay. |
+| Flujo | Archivo de steering | Descripción | Ejemplo de mensaje |
+|-------|---------------------|-------------|--------------------|
+| Escaneo de archivos | `steering/file-scan.md` | Escanea archivos concretos, un directorio o tus cambios locales de git (staged y unstaged). | "Escanea src/controllers/auth.controller.ts en busca de problemas de seguridad" |
+| Escaneo de PR | `steering/pr-scan.md` | Escanea cada archivo de código modificado en un pull request. Opcionalmente publica los resultados como comentario en el PR. | "Escanea el PR #45 en busca de vulnerabilidades" |
+| Triage de issues | `steering/issues-triage.md` | Lista los issues abiertos de Aikido de un repositorio, revisa un issue concreto o ignora uno con una razón documentada. | "Muéstrame todos los issues abiertos de Aikido de my-backend" |
+| Reporte de seguridad | `steering/security-report.md` | Guarda un snapshot JSON de los issues actuales y lo compara con el anterior (issues resueltos, nuevos y persistentes, y un score de seguridad). | "Genera un reporte de seguridad de my-api" |
+| Reporte de score (interno) | `steering/score-tracking-report.md` | Sigue tu score de seguridad en el tiempo como métrica de evaluación, a partir de los snapshots guardados. Incluye archivos y títulos de issues, así que no es para clientes. | "Genera el reporte de score de my-api" |
+| Reporte para el cliente (externo) | `steering/client-report.md` | Reporte en lenguaje sencillo para entregar al cliente, en español o inglés. Cubre un repositorio por defecto, o varios en un solo documento. Pregunta el nombre del proyecto y el idioma. Sin score, sin rutas ni títulos. Muestra la evolución con snapshots, o un baseline si no los hay. | "Genera el reporte para el cliente de my-backend" |
 
 Los flujos de escaneo también señalan posibles falsos positivos, como entradas ya validadas con Zod/Joi, secretos de ejemplo o rutas construidas con constantes.
 
@@ -60,15 +60,15 @@ Escanea el PR #45 en busca de vulnerabilidades
 Muéstrame todos los issues abiertos de Aikido de my-backend
 Ignora el issue 12345, es un falso positivo validado por un schema
 Genera un reporte de seguridad de my-api
-Genera el reporte ejecutivo de seguridad de my-api
-Genera el resumen ejecutivo de my-backend
+Genera el reporte de score de my-api
+Genera el reporte para el cliente de my-backend
 ```
 
-Los flujos están escritos en inglés, pero el agente entiende y responde en el idioma que uses. El resumen ejecutivo pregunta en qué idioma se debe generar el documento.
+Los flujos están escritos en inglés, pero el agente entiende y responde en el idioma que uses. El reporte para el cliente pregunta en qué idioma se debe generar el documento.
 
-## Resumen ejecutivo
+## Reporte para el cliente
 
-Es el flujo pensado para audiencias no técnicas. Funciona así:
+Es el flujo pensado para entregar al cliente. Funciona así:
 
 - Pregunta el **nombre del proyecto** para el título y el **idioma** del documento (español o inglés).
 - Usa solo los repositorios que nombres. Si nombras varios (por ejemplo backend y frontend), los une en un solo documento con un desglose por repositorio.
@@ -84,10 +84,10 @@ Los datos históricos solo existen si antes se guardaron snapshots. Aikido devue
 Los archivos se escriben en `security/reports/`, en la raíz del workspace:
 
 - `YYYY-MM-DD-{repo-name}.json`: un snapshot por día. Volver a generar el reporte el mismo día lo sobrescribe.
-- `executive-report-{period}-{repo-name}.md`: el reporte ejecutivo técnico generado.
-- `executive-summary-{project}-{YYYY-MM-DD}.md`: el resumen ejecutivo en lenguaje sencillo.
+- `score-tracking-report-{period}-{repo-name}.md`: el reporte de score, de uso interno.
+- `client-report-{project}-{YYYY-MM-DD}.md`: el reporte para el cliente, en lenguaje sencillo.
 
-El score de seguridad es `100 - (3 × críticos) - (2 × altos) - (1 × medios)`, con mínimo 0. Los issues de severidad baja no lo afectan. Solo lo usan los reportes de seguridad y ejecutivo técnico.
+El score de seguridad es `100 - (3 × críticos) - (2 × altos) - (1 × medios)`, con mínimo 0. Los issues de severidad baja no lo afectan. Lo usan el reporte de seguridad y el reporte de score. El reporte para el cliente no lo muestra.
 
 Versiona la carpeta `security/reports/` para que el equipo comparta el historial. Los snapshots contienen títulos de issues y rutas de archivos, así que comprueba que la visibilidad de tu repositorio sea adecuada.
 
@@ -99,9 +99,10 @@ Versiona la carpeta `security/reports/` para que el equipo comparta el historial
 | "Unauthorized" o "sign-in required" | Dile a Kiro "Login to Aikido". Si falla, revisa `AIKIDO_API_KEY` por espacios de más o un token vencido. |
 | El escaneo no devuelve nada para un archivo vulnerable | Comprueba que el lenguaje sea compatible, que el nombre del repositorio coincida con el de Aikido y que el archivo no esté vacío. |
 | El escaneo de PR no puede listar archivos | Configura un servidor MCP de GitHub en Kiro. |
-| Los totales del resumen ejecutivo parecen bajos | Comprueba que el nombre del repositorio sea exactamente el de Aikido. El flujo recorre todas las páginas de resultados. |
+| Los totales del reporte para el cliente parecen bajos | Comprueba que el nombre del repositorio sea exactamente el de Aikido. El flujo recorre todas las páginas de resultados. |
 
 ## Notas
 
 - Ignorar un issue en Aikido lo quita de los escaneos y snapshots futuros, y el reporte lo cuenta como resuelto. Da siempre una razón documentada.
-- El reporte ejecutivo técnico incluye las secciones "Actions Taken" y "Next Steps" con texto de ejemplo. Edítalas antes de entregarlo.
+- El reporte de score incluye las secciones "Actions Taken" y "Next Steps" con texto de ejemplo. Edítalas antes de entregarlo.
+- Si pides solo "el reporte ejecutivo", el agente te pregunta si quieres el reporte de score (interno) o el reporte para el cliente.

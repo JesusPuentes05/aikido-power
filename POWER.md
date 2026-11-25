@@ -20,8 +20,8 @@ Beyond scanning, it provides a structured workflow for generating security repor
 - **file-scan** — Scan specific files or local changes for vulnerabilities
 - **issues-triage** — List, review, and manage Aikido issues for a repository
 - **security-report** — Generate a security snapshot with metrics and compare against previous periods
-- **executive-report** — Generate a polished markdown report for evaluations, ready to paste into Google Docs
-- **executive-summary** — Generate a plain-language security report for managers and executives, for one repository or several in one document
+- **score-tracking-report** — Internal report to track the repository security score over time, for personal evaluation metrics. Not for clients
+- **client-report** — Plain-language report to deliver to a client, for one repository or several in one document. No score, no file paths
 
 ## Onboarding
 
@@ -76,18 +76,23 @@ Generate a metrics snapshot for compliance:
 
 The agent captures the current state, compares against any previous snapshot, and outputs a report with numbers and trends.
 
-### Executive Report
+### Score Tracking Report (internal)
 
-Generate a polished document for your evaluation:
+Track the security score of a repository over time. Meant for you and your team lead, as an evaluation metric:
 
-> "Generate the executive security report for my-api"
+> "Generate the score tracking report for my-api"
 
-Produces a copy-paste ready markdown with security score, progress timeline, achievements, and remaining risks. Edit the "Actions Taken" section with your specific work before submitting.
+Produces a markdown report with the security score, a progress timeline, resolved and new issues, and the top remaining risks. The score reflects the state of the repository, not only your work, so the report includes a note about it. Edit the "Actions Taken" section with your specific work before submitting. The report includes file paths and issue titles, so do not share it outside the company.
 
-### Executive Summary (non-technical)
-Generate a report for managers and executives:
-> "Generate the executive summary for my-backend"
-The agent asks for the project name and the language, then builds a document with an explanation of Aikido, an executive summary, a glossary, an interpretation of results and the evolution against previous snapshots. If no snapshots exist, it is a baseline. To combine several repositories in one document, name them in the request.
+### Client Report (external)
+
+Generate a plain-language report to deliver to a client:
+
+> "Generate the client report for my-backend"
+
+The agent asks for the project name and the language, then builds a document with an explanation of Aikido, an executive summary, a glossary, an interpretation of results and the evolution against previous snapshots. If no snapshots exist, it is a baseline. To combine several repositories in one document, name them in the request. It contains only counts and explanatory text: no score, no file paths, no issue titles.
+
+If you only ask for "the executive report", the agent asks which of the two you mean.
 
 ## Best Practices
 

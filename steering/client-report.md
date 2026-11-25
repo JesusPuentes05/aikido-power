@@ -1,20 +1,28 @@
-# Executive Summary for Non-Technical Audiences
+# Client Report Workflow
 
-Generate a plain-language security report for managers and executives. It covers one repository by default, or several repositories in a single document when the user asks for it. It explains what was found, what it means and what to do, without technical detail.
+Generate a plain-language security report to deliver to a client. It covers one repository by default, or several repositories in a single document when the user asks for it. It explains what was found, what it means and what to do, without technical detail.
 
-This flow is separate from `executive-report.md`, which produces a technical report with a security score. Do not calculate or show a score here.
+## Audience and Use
 
+| | |
+|---|---|
+| **Audience** | The client and their managers. The document leaves the company. |
+| **Purpose** | Deliverable that explains the security status of the project in plain language. |
+| **Contains** | Explanation of Aikido, executive summary, glossary, interpretation of results, evolution. Counts and fixed text only. |
+| **Not for** | Personal or internal tracking. It has no score, no file paths, no issue titles. Use `score-tracking-report.md` for that. |
+
+If the user only says "executive report" or "reporte ejecutivo" without more context, ask which one they want: this client report, or the score tracking report.
 ---
 
 ## Trigger
 
-User asks for an executive or management security report for a general audience, for example:
-- "Generate the executive summary for the backend"
-- "Genera el reporte ejecutivo de seguridad de my-api"
-- "I need a security report for management covering backend and frontend"
-- "Reporte de seguridad para directivos"
+User asks for a security report to give to a client or a non-technical audience, for example:
+- "Generate the client report for the backend"
+- "Genera el reporte de seguridad para el cliente de my-api"
+- "I need a security report for the client covering backend and frontend"
+- "Reporte de seguridad para entregar al cliente"
 
-If the user asks for the technical report with score, timeline and top risks, use `executive-report.md` instead.
+If the user asks for their own score, a timeline or the top risks with files, use `score-tracking-report.md` instead.
 
 ---
 
@@ -84,7 +92,7 @@ For several repositories, calculate evolution per repository. Show a combined to
 Save to:
 
 ```
-security/reports/executive-summary-{project-slug}-{YYYY-MM-DD}.md
+security/reports/client-report-{project-slug}-{YYYY-MM-DD}.md
 ```
 
 Write the report in the language the user chose. The template below is in Spanish. For English, translate the fixed text faithfully and keep the same structure.
