@@ -10,7 +10,7 @@ User explicitly asks for an executive report, for example:
 - "Generate the executive security report"
 - "Create my evaluation security report"
 - "Give me the security summary for my evaluation"
-- "Generate executive report for api-ethos-medic"
+- "Generate executive report for my-api"
 
 ---
 
@@ -81,7 +81,7 @@ Output a markdown file at:
 security/reports/executive-report-{period}-{repo-name}.md
 ```
 
-Example: `security/reports/executive-report-Q2-2026-api-ethos-medic.md`
+Example: `security/reports/executive-report-Q2-2026-my-api.md`
 
 ### Report Format
 
