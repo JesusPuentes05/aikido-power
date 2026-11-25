@@ -1,7 +1,7 @@
 ---
 name: "aikido-power"
 displayName: "Aikido Security Scanner"
-description: "Run SAST and secrets scans on code files, triage security issues, and generate periodic security reports with quantifiable metrics for compliance tracking."
+description: "Run SAST and secrets scans on code files, triage security issues, and generate periodic security reports with quantifiable metrics for compliance tracking. Built by Codster."
 keywords: ["aikido", "security", "sast", "secrets", "vulnerability", "scan"]
 author: "Codster"
 ---
